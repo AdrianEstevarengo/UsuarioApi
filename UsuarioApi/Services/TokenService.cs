@@ -15,7 +15,8 @@ namespace UsuarioApi.Services
             {
                 new Claim("username", usuario.UserName),
                 new Claim("id", usuario.Id),
-                new Claim(ClaimTypes.DateOfBirth, usuario.DataNascimento.ToString())
+                new Claim(ClaimTypes.DateOfBirth, usuario.DataNascimento.ToString()),
+                 new Claim("loginTimestamp", DateTime.UtcNow.ToString())
 
             };
             var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("SAMVMC8Y3NVFDNSPM943HN"));
@@ -24,11 +25,10 @@ namespace UsuarioApi.Services
 
             var token = new JwtSecurityToken
                 (
-                expires: DateTime.Now.AddMinutes(10),
+                expires: DateTime.Now.AddMinutes(10), 
                 claims: claims,
                 signingCredentials: signingCredentials
                 );
-
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
     }
